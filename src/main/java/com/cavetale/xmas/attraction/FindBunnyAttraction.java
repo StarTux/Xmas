@@ -32,16 +32,17 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.SaveTag> {
     @Setter protected Duration searchTime = Duration.ofSeconds(40);
-    protected static final int MAX_BUNNIES = 10;
+    protected static final int MAX_BUNNIES = 7;
     protected final Set<Vec3i> possibleBunnyBlocks;
     protected Rabbit currentBunny;
     protected int secondsLeft;
-    protected static final List<Rabbit.Type> rabbitTypes = List.of(Rabbit.Type.BLACK,
-                                                                   Rabbit.Type.BLACK_AND_WHITE,
-                                                                   Rabbit.Type.BROWN,
-                                                                   Rabbit.Type.GOLD,
-                                                                   Rabbit.Type.SALT_AND_PEPPER,
-                                                                   Rabbit.Type.WHITE);
+    protected static final List<Rabbit.Type> RABBIT_TYPES = List
+        .of(Rabbit.Type.BLACK,
+            Rabbit.Type.BLACK_AND_WHITE,
+            Rabbit.Type.BROWN,
+            Rabbit.Type.GOLD,
+            Rabbit.Type.SALT_AND_PEPPER,
+            Rabbit.Type.WHITE);
 
     protected FindBunnyAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
@@ -146,7 +147,7 @@ public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.Sa
         } else {
             progress(player);
             player.sendActionBar(makeProgressComponent(secondsLeft, Unicode.HEART.string,
-                                                       saveTag.bunnyBlockIndex + 1, saveTag.bunnyBlocks.size()));
+                                                       saveTag.bunnyBlockIndex, saveTag.bunnyBlocks.size()));
             changeState(State.SEARCH);
         }
     }
@@ -175,7 +176,7 @@ public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.Sa
                 b.setRemoveWhenFarAway(false);
                 b.setGravity(false);
                 b.setSilent(true);
-                b.setRabbitType(rabbitTypes.get(random.nextInt(rabbitTypes.size())));
+                b.setRabbitType(RABBIT_TYPES.get(random.nextInt(RABBIT_TYPES.size())));
                 Bukkit.getMobGoals().removeAllGoals(b);
             });
         currentBunny.setMetadata("nomap", new FixedMetadataValue(plugin, true));
@@ -201,7 +202,7 @@ public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.Sa
         if (seconds != secondsLeft) {
             secondsLeft = seconds;
             player.sendActionBar(makeProgressComponent(seconds, Unicode.HEART.string,
-                                                       saveTag.bunnyBlockIndex + 1, saveTag.bunnyBlocks.size()));
+                                                       saveTag.bunnyBlockIndex, saveTag.bunnyBlocks.size()));
             currentBunny.getWorld().playSound(currentBunny.getLocation(), Sound.ENTITY_RABBIT_HURT, SoundCategory.MASTER, 1.0f, 0.5f);
         }
         Location location = currentBunny.getLocation();

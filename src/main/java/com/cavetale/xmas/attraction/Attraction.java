@@ -74,6 +74,16 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
     protected Component displayName = Component.empty();
     protected Component description = Component.empty();
     protected boolean awake;
+    protected static final List<List<ItemStack>> PRIZE_POOL = List
+        .of(List.of(new ItemStack(Material.DIAMOND, 2),
+                    new ItemStack(Material.DIAMOND, 4),
+                    new ItemStack(Material.DIAMOND, 8),
+                    new ItemStack(Material.DIAMOND, 16),
+                    new ItemStack(Material.DIAMOND, 32),
+                    new ItemStack(Material.DIAMOND, 64)),
+            List.of(new ItemStack(Material.EMERALD),
+                    new ItemStack(Material.COD),
+                    new ItemStack(Material.POISONOUS_POTATO)));
 
     public static Attraction of(XmasPlugin plugin, @NonNull final String name, @NonNull final List<Cuboid> areaList, final Booth booth) {
         if (areaList.isEmpty()) throw new IllegalArgumentException(name + ": area list is empty");
@@ -95,6 +105,8 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
     private static Attraction makeAttraction(XmasPlugin plugin, AttractionType type, String name, List<Cuboid> areaList, Booth booth) {
         switch (type) {
         case MUSIC_HERO: return new MusicHeroAttraction(plugin, name, areaList, booth);
+        case FIND_BUNNY: return new FindBunnyAttraction(plugin, name, areaList, booth);
+        case REPEAT_MELODY: return new RepeatMelodyAttraction(plugin, name, areaList, booth);
         default:
             throw new IllegalArgumentException(type + ": Not implemented!");
         }
@@ -199,6 +211,11 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
      */
     protected final void progress(Player player) {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 0.3f, 2.0f);
+    }
+
+    protected final ItemStack randomPrize() {
+        List<ItemStack> pool = PRIZE_POOL.get(random.nextInt(PRIZE_POOL.size()));
+        return pool.get(random.nextInt(pool.size()));
     }
 
     /**
@@ -358,9 +375,21 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
 
     protected final void clickMainVillager(Player player) {
         Session session = plugin.sessionOf(player);
-        // TODO prize?
-        
-        //
+        RewardType storedReward = session.getTag().getStoredRewards().getOrDefault(name, RewardType.NONE);
+        switch (storedReward) {
+        case FIRST_COMPLETION:
+            session.getTag().getStoredRewards().remove(name);
+            session.getTag().getPresentList().add(booth.xmasPresent);
+            session.save();
+            plugin.openPresentInventory(player, booth.xmasPresent, null);
+            return;
+        case REPEAT_COMPLETION:
+            session.getTag().getStoredRewards().remove(name);
+            session.save();
+            plugin.openPrize(player, randomPrize(), true);
+            return;
+        default: case NONE: break;
+        }
         if (!checkCooldown(player)) return;
         if (!checkSomebodyPlaying(player)) return;
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);

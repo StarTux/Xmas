@@ -54,7 +54,7 @@ public enum Music {
                    .beat(0, C, 0).beat(4, G, 1)
                    .beat(0, F, 0).beat(4, A, 1)
                    .beat(0, A, 0).beat(4, F, 0)
-                   
+
                    .beat(0, D, 0).beat(2, G, 1)
                    .beat(2, A, 1)
                    .beat(0, D, 0).beat(2, B, 1)
@@ -67,7 +67,7 @@ public enum Music {
                    .beat(0, C, 0).beat(2, E, 0)
                    .beat(2, B, 0)
                    .beat(0, A, 0).beat(8, F, 0)
-                   
+
                    .parent().extra(GUITAR)
                    .beat(4, F, 1).beat(4, F, 1).beat(4, F, 1).beat(4, C, 1)
                    .beat(4, F, 1).beat(4, C, 1).beat(8, F, 1)
@@ -115,7 +115,7 @@ public enum Music {
                     .beat(4, B, 1) // New
 
                     .beat(8, C, 1)), // Year.
-                    
+
     JINGLE_BELLS(PIANO, 50L,
                  Map.of(F, SHARP),
                  b -> b

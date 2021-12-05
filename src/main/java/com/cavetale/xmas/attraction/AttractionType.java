@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum AttractionType {
-    // SHOOT_TARGET(ShootTargetAttraction.class),
-    // OPEN_CHEST(OpenChestAttraction.class),
     FIND_BUNNY(FindBunnyAttraction.class),
     REPEAT_MELODY(RepeatMelodyAttraction.class),
     MUSIC_HERO(MusicHeroAttraction.class);

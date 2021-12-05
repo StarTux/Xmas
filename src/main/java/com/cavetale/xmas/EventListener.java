@@ -2,19 +2,22 @@ package com.cavetale.xmas;
 
 import com.cavetale.area.struct.Vec3i;
 import com.cavetale.core.event.player.PluginPlayerEvent;
-import com.cavetale.xmas.attraction.Attraction;
-import com.cavetale.xmas.attraction.MusicHeroAttraction;
 import com.cavetale.magicmap.event.MagicMapCursorEvent;
 import com.cavetale.magicmap.util.Cursors;
 import com.cavetale.mytems.event.music.PlayerBeatEvent;
 import com.cavetale.mytems.event.music.PlayerCloseMusicalInstrumentEvent;
 import com.cavetale.mytems.event.music.PlayerMelodyCompleteEvent;
 import com.cavetale.mytems.event.music.PlayerOpenMusicalInstrumentEvent;
+import com.cavetale.resident.PluginSpawn;
+import com.cavetale.xmas.attraction.Attraction;
+import com.cavetale.xmas.attraction.MusicHeroAttraction;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -92,7 +95,20 @@ public final class EventListener implements Listener {
     @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
     protected void onPlayerInteract(PlayerInteractEvent event) {
         if (!event.hasBlock()) return;
-        Location location = event.getClickedBlock().getLocation();
+        Block block = event.getClickedBlock();
+        if (!block.getWorld().getName().equals(XmasPlugin.WORLD)) return;
+        Vec3i vec = Vec3i.of(block);
+        if (vec.equals(plugin.calendarBlock)) {
+            event.setUseInteractedBlock(Event.Result.DENY);
+            plugin.openCalendar(event.getPlayer());
+            return;
+        }
+        if (vec.equals(plugin.presentBlock)) {
+            event.setUseInteractedBlock(Event.Result.DENY);
+            plugin.openPresentInventory(event.getPlayer());
+            return;
+        }
+        Location location = block.getLocation();
         for (Attraction attraction : plugin.attractionsMap.values()) {
             if (!attraction.isInArea(location)) continue;
             attraction.onPlayerInteract(event);
@@ -144,6 +160,23 @@ public final class EventListener implements Listener {
             MapCursor mapCursor = Cursors.make(cursorType,
                                                vec.x - event.getMinX(),
                                                vec.z - event.getMinZ(),
+                                               8);
+            event.getCursors().addCursor(mapCursor);
+        }
+        for (XmasPresent xmasPresent : XmasPresent.values()) {
+            int index = xmasPresent.ordinal();
+            if (plugin.traderSpawns.size() <= index) break;
+            PluginSpawn traderSpawn = plugin.traderSpawns.get(index);
+            int x = traderSpawn.loc.getBlockX();
+            int z = traderSpawn.loc.getBlockZ();
+            if (x < event.getMinX() || x > event.getMaxX()) continue;
+            if (z < event.getMinZ() || z > event.getMaxZ()) continue;
+            MapCursor.Type cursorType = session.tag.presentsGiven.contains(xmasPresent)
+                ? MapCursor.Type.SMALL_WHITE_CIRCLE
+                : MapCursor.Type.WHITE_CROSS;
+                MapCursor mapCursor = Cursors.make(cursorType,
+                                               x - event.getMinX(),
+                                               z - event.getMinZ(),
                                                8);
             event.getCursors().addCursor(mapCursor);
         }

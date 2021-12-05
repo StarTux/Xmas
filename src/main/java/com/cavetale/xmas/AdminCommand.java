@@ -4,7 +4,7 @@ import com.cavetale.core.command.AbstractCommand;
 import com.cavetale.core.command.CommandArgCompleter;
 import com.cavetale.core.command.CommandWarn;
 import com.cavetale.mytems.item.music.MelodyReplay;
-import com.cavetale.xmas.attraction.Attraction;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,9 +27,19 @@ public final class AdminCommand extends AbstractCommand<XmasPlugin> {
         rootNode.addChild("stopmusic").denyTabCompletion()
             .description("Stop music")
             .playerCaller(this::stopMusic);
-        rootNode.addChild("wakeup").arguments("<day>")
-            .description("Wakeup attractions")
-            .senderCaller(this::wakeUp);
+        rootNode.addChild("day").arguments("<day>")
+            .description("Force day of Christmas")
+            .senderCaller(this::day);
+        rootNode.addChild("present").arguments("<player> <present>")
+            .completers(CommandArgCompleter.NULL,
+                        CommandArgCompleter.enumLowerList(XmasPresent.class))
+            .description("Add item to player's present inventory")
+            .senderCaller(this::present);
+        rootNode.addChild("key").arguments("<player> <amount>")
+            .completers(CommandArgCompleter.NULL,
+                        CommandArgCompleter.integer(i -> true))
+            .description("Add keys to player's inventory")
+            .senderCaller(this::key);
     }
 
     protected boolean cal(Player player, String[] args) {
@@ -60,7 +70,7 @@ public final class AdminCommand extends AbstractCommand<XmasPlugin> {
         return true;
     }
 
-    protected boolean wakeUp(CommandSender sender, String[] args) {
+    protected boolean day(CommandSender sender, String[] args) {
         if (args.length != 1) return false;
         int day;
         try {
@@ -68,12 +78,51 @@ public final class AdminCommand extends AbstractCommand<XmasPlugin> {
         } catch (IllegalArgumentException iae) {
             throw new CommandWarn("Invalid day: " + args[0]);
         }
-        int count = 0;
-        for (Attraction attraction : plugin.attractionsMap.values()) {
-            attraction.wakeUp(day);
-            count += 1;
+        plugin.forcedDayOfChristmas = day;
+        plugin.updateDayOfChristmas();
+        sender.sendMessage("Forced day of Christmas to " + day);
+        return true;
+    }
+
+    protected boolean present(CommandSender sender, String[] args) {
+        if (args.length != 2) return false;
+        Player target = Bukkit.getPlayerExact(args[0]);
+        if (target == null) throw new CommandWarn("Player not found: " + args[0]);
+        XmasPresent xmasPresent;
+        try {
+            xmasPresent = XmasPresent.valueOf(args[1].toUpperCase());
+        } catch (IllegalArgumentException iae) {
+            throw new CommandWarn("Present not found: " + args[1]);
         }
-        sender.sendMessage("Woke up " + count + " attractions with day " + day);
+        Session session = plugin.sessionOf(target);
+        boolean has = session.tag.presentList.contains(xmasPresent);
+        if (!has) {
+            session.tag.presentList.add(xmasPresent);
+            session.save();
+        }
+        plugin.openPresentInventory(target, xmasPresent, null);
+        if (!has) {
+            sender.sendMessage("Given " + xmasPresent + " to " + target.getName());
+        } else {
+            sender.sendMessage("Fake given " + xmasPresent + " to " + target.getName());
+        }
+        return true;
+    }
+
+    protected boolean key(CommandSender sender, String[] args) {
+        if (args.length != 2) return false;
+        Player target = Bukkit.getPlayerExact(args[0]);
+        if (target == null) throw new CommandWarn("Player not found: " + args[0]);
+        int amount;
+        try {
+            amount = Integer.parseInt(args[1]);
+        } catch (IllegalArgumentException iae) {
+            throw new CommandWarn("Invalid amount: " + args[1]);
+        }
+        Session session = plugin.sessionOf(target);
+        session.tag.keys += amount;
+        session.save();
+        sender.sendMessage("Given " + amount + " keys to " + target.getName());
         return true;
     }
 }

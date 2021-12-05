@@ -22,6 +22,7 @@ public final class Session {
     protected final String name;
     protected final File saveFile;
     protected Tag tag;
+    protected XmasPresent lastClickedPresent;
 
     protected Session(final XmasPlugin plugin, final Player player) {
         this.plugin = plugin;

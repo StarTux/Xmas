@@ -2,10 +2,15 @@ package com.cavetale.xmas;
 
 import com.cavetale.area.struct.AreasFile;
 import com.cavetale.area.struct.Cuboid;
+import com.cavetale.area.struct.Vec3i;
+import com.cavetale.core.font.DefaultFont;
 import com.cavetale.core.font.GuiOverlay;
 import com.cavetale.mytems.Mytems;
 import com.cavetale.mytems.util.Items;
 import com.cavetale.mytems.util.Text;
+import com.cavetale.resident.PluginSpawn;
+import com.cavetale.resident.ZoneType;
+import com.cavetale.resident.save.Loc;
 import com.cavetale.xmas.attraction.Attraction;
 import com.cavetale.xmas.attraction.AttractionType;
 import com.cavetale.xmas.util.Gui;
@@ -29,37 +34,55 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class XmasPlugin extends JavaPlugin {
     @Getter protected static XmasPlugin instance;
     protected static final String WORLD = "winter_woods";
-    protected static final String ATTRACTION_AREAS = "XmasAttractions";
-    protected static final String TRADER_AREAS = "XmasTraders";
+    protected static final String ATTRACTION_AREAS = "Xmas";
+    protected static final String TRADER_AREAS = ATTRACTION_AREAS;
     XmasCommand xmasCommand = new XmasCommand(this);
     AdminCommand adminCommand = new AdminCommand(this);
     EventListener eventListener = new EventListener(this);
     protected final Map<String, Attraction> attractionsMap = new HashMap<>();
     protected final Map<UUID, Session> sessionsMap = new HashMap<>();
+    protected final List<PluginSpawn> traderSpawns = new ArrayList<>();
     @Getter protected File attractionsFolder;
     @Getter protected File playersFolder;
     public static final int YEAR = 2021;
     public static final YearMonth XMAS_MONTH = YearMonth.of(YEAR, Month.DECEMBER);
     protected final Random random = ThreadLocalRandom.current();
     protected int currentDayOfChristmas = 0;
+    protected int forcedDayOfChristmas = 0;
+    protected List<ItemStack> dailyPrizes;
+    protected Vec3i calendarBlock = Vec3i.ZERO;
+    protected Vec3i presentBlock = Vec3i.ZERO;
 
     @Override
     public void onEnable() {
         instance = this;
+        dailyPrizes = List
+            .of(new ItemStack(Material.DIAMOND, 20),
+                Mytems.KITTY_COIN.createItemStack(2),
+                new ItemStack(Material.TNT, 64),
+                Mytems.RUBY.createItemStack(3),
+                Mytems.STAR.createItemStack(),
+                Mytems.MOB_CATCHER.createItemStack(16));
         xmasCommand.enable();
         adminCommand.enable();
         eventListener.enable();
@@ -68,6 +91,7 @@ public final class XmasPlugin extends JavaPlugin {
         attractionsFolder.mkdirs();
         playersFolder.mkdirs();
         loadAttractions();
+        loadTraders();
         Bukkit.getScheduler().runTaskTimer(this, this::tick, 0L, 0L);
         Bukkit.getScheduler().runTaskTimer(this, this::updateDayOfChristmas, 0L, 20L * 60L);
         Gui.enable(this);
@@ -77,6 +101,7 @@ public final class XmasPlugin extends JavaPlugin {
     public void onDisable() {
         clearSessions();
         clearAttractions();
+        clearTraders();
     }
 
     public World getWorld() {
@@ -96,12 +121,16 @@ public final class XmasPlugin extends JavaPlugin {
     }
 
     protected void updateDayOfChristmas() {
-        LocalDate now = LocalDate.now();
-        for (int i = 25; i > 0; i -= 1) {
-            LocalDate date = XMAS_MONTH.atDay(i);
-            if (now.isAfter(date) || now.isEqual(date)) {
-                currentDayOfChristmas = i;
-                break;
+        if (forcedDayOfChristmas > 0) {
+            currentDayOfChristmas = forcedDayOfChristmas;
+        } else {
+            LocalDate now = LocalDate.now();
+            for (int i = 25; i > 0; i -= 1) {
+                LocalDate date = XMAS_MONTH.atDay(i);
+                if (now.isAfter(date) || now.isEqual(date)) {
+                    currentDayOfChristmas = i;
+                    break;
+                }
             }
         }
         for (Attraction attraction : attractionsMap.values()) {
@@ -145,6 +174,17 @@ public final class XmasPlugin extends JavaPlugin {
         Set<Booth> unusedBooths = EnumSet.allOf(Booth.class);
         for (Map.Entry<String, List<Cuboid>> entry : areasFile.areas.entrySet()) {
             String name = entry.getKey();
+            List<Cuboid> areaList = entry.getValue();
+            if (areaList.isEmpty()) continue;
+            if (name.equals("ClickCalendar")) {
+                calendarBlock = areaList.get(0).min;
+                continue;
+            } else if (name.equals("ClickPresents")) {
+                presentBlock = areaList.get(0).min;
+                continue;
+            } else if (name.equals("Traders")) {
+                continue;
+            }
             Booth booth = Booth.forName(name);
             if (booth == null) {
                 getLogger().warning(name + ": No Booth found!");
@@ -152,7 +192,6 @@ public final class XmasPlugin extends JavaPlugin {
             } else {
                 unusedBooths.remove(booth);
             }
-            List<Cuboid> areaList = entry.getValue();
             Attraction attraction = Attraction.of(this, name, areaList, booth);
             if (attraction == null) {
                 getLogger().warning(name + ": No Attraction!");
@@ -181,6 +220,38 @@ public final class XmasPlugin extends JavaPlugin {
             getLogger().info(counts.get(type) + " " + type);
         }
         getLogger().info(attractionsMap.size() + " Total");
+    }
+
+    protected void clearTraders() {
+        for (PluginSpawn pluginSpawn : traderSpawns) {
+            pluginSpawn.unregister();
+        }
+        traderSpawns.clear();
+    }
+
+    protected void loadTraders() {
+        clearTraders();
+        World world = getWorld();
+        AreasFile areasFile = AreasFile.load(world, TRADER_AREAS);
+        if (areasFile == null) {
+            throw new IllegalStateException("Areas file not found: " + TRADER_AREAS);
+        }
+        List<Cuboid> regions = areasFile.areas.get("Traders");
+        if (regions == null) {
+            throw new IllegalStateException("Traders list not found!");
+        }
+        for (XmasPresent xmasPresent : XmasPresent.values()) {
+            if (xmasPresent.ordinal() >= regions.size()) {
+                throw new IllegalStateException("Trader list too short!");
+            }
+            Cuboid cuboid = regions.get(xmasPresent.ordinal());
+            PluginSpawn traderSpawn = PluginSpawn.register(this, ZoneType.CHRISTMAS, Loc.of(cuboid.min.toLocation(world)));
+            traderSpawns.add(traderSpawn);
+            traderSpawn.setOnPlayerClick(player -> onClickTrader(player, xmasPresent));
+            traderSpawn.setOnMobSpawning(mob -> {
+                    mob.setCollidable(false);
+            });
+        }
     }
 
     public List<Player> getPlayersIn(Cuboid area) {
@@ -218,18 +289,20 @@ public final class XmasPlugin extends JavaPlugin {
             .layer(GuiOverlay.TOP_BAR, TextColor.color(0xFFFFFF))
             .title(Attraction.xmasify("Advent Calendar " + YEAR).decorate(TextDecoration.BOLD));
         int weekNumber = 1;
-        final int openedUntil = session.tag.doorsOpened;
+        final int doorsOpened = session.tag.doorsOpened;
         final int keyAmount = session.tag.keys;
         for (int i = 0; i < 25; i += 1) {
+            final int prizeIndex = i;
             final int dayOfChristmas = i + 1;
             LocalDate date = XMAS_MONTH.atDay(dayOfChristmas);
             DayOfWeek dayOfWeek = date.getDayOfWeek();
             if (i > 0 && dayOfWeek == DayOfWeek.MONDAY) weekNumber += 1;
             int dayNumber = dayOfWeek.getValue();
             int guiIndex = weekNumber * 9 + (dayNumber - 1) + 1;
-            boolean open = openedUntil >= dayOfChristmas;
+            boolean open = doorsOpened >= dayOfChristmas;
             ItemStack item;
-            final boolean canOpen = i == openedUntil && currentDayOfChristmas >= dayOfChristmas;
+            final boolean canOpen = i == doorsOpened && currentDayOfChristmas >= dayOfChristmas
+                && dailyPrizes.size() > prizeIndex;
             if (open) {
                 item = Mytems.CROSSED_CHECKBOX.createItemStack(dayOfChristmas);
             } else {
@@ -246,6 +319,9 @@ public final class XmasPlugin extends JavaPlugin {
                                 if (!click.isLeftClick()) return;
                                 player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK,
                                                  SoundCategory.MASTER, 0.5f, 2.0f);
+                                session.getTag().setKeys(keyAmount - 1);
+                                session.getTag().setDoorsOpened(doorsOpened + 1);
+                                openPrize(player, dailyPrizes.get(prizeIndex), true);
                             })
                         : (click -> {
                                 if (!click.isLeftClick()) return;
@@ -263,18 +339,111 @@ public final class XmasPlugin extends JavaPlugin {
         gui.open(player);
     }
 
-    public void openPresentInventory(Player player) {
+    public void openPresentInventory(Player player, XmasPresent highlight, XmasPresent trader) {
         Session session = sessionOf(player);
         final int size = 6 * 9;
         Gui gui = new Gui(this).size(size);
         GuiOverlay.Builder builder = GuiOverlay.builder(size)
             .layer(GuiOverlay.BLANK, TextColor.color(0x8080FF))
             .title(Attraction.xmasify("Secret Santa Inventory").decorate(TextDecoration.BOLD));
-        gui.title(builder.build());
-        int index = 0;
+        int i = 0;
         for (XmasPresent xmasPresent : session.getTag().getPresentList()) {
-            gui.setItem(index++, xmasPresent.makeItemStack());
+            final int index = i++;
+            gui.setItem(index, xmasPresent.makeItemStack(), click -> {
+                    if (!click.isLeftClick()) return;
+                    onClickPresentInventory(player, xmasPresent, trader);
+                });
+            if (xmasPresent == highlight) {
+                builder.highlightSlot(index, NamedTextColor.GOLD);
+            }
         }
+        gui.title(builder.build());
         gui.open(player);
+    }
+
+    public void openPresentInventory(Player player) {
+        openPresentInventory(player, null, null);
+    }
+
+    public void openPrize(Player player, ItemStack prize, boolean hidden) {
+        Session session = sessionOf(player);
+        final int size = 3 * 9;
+        final int slot = 13;
+        Gui gui = new Gui(this).size(size);
+        GuiOverlay.Builder builder = GuiOverlay.builder(size)
+            .layer(GuiOverlay.BLANK, TextColor.color(0xFF0000))
+            .title(Attraction.xmasify("Merry Christmas!").decorate(TextDecoration.BOLD));
+        if (hidden) {
+            List<Component> tooltip = List.of(Attraction.xmasify("Open Present"));
+            ItemStack icon = Mytems.QUESTION_MARK.createIcon(tooltip);
+            gui.setItem(slot, icon, click -> {
+                    if (!click.isLeftClick()) return;
+                    Music.DECK_THE_HALLS.melody.play(this, player);
+                    openPrize(player, prize, false);
+                });
+        } else {
+            gui.setItem(slot, prize);
+            gui.setEditable(true);
+            gui.onClose(evt -> {
+                    for (ItemStack item : gui.getInventory()) {
+                        if (item == null || item.getType() == Material.AIR) continue;
+                        for (ItemStack drop : player.getInventory().addItem(item).values()) {
+                            player.getWorld().dropItem(player.getEyeLocation(), drop);
+                        }
+                    }
+                });
+            builder.highlightSlot(slot, NamedTextColor.GOLD);
+        }
+        gui.title(builder.build());
+        gui.open(player);
+    }
+
+    protected void onClickTrader(Player player, XmasPresent xmasPresent) {
+        Session session = sessionOf(player);
+        session.lastClickedPresent = xmasPresent;
+        if (session.tag.presentsGiven.contains(xmasPresent)) {
+            player.sendMessage(Attraction.xmasify("Thank you so much!"));
+            player.sendActionBar(Attraction.xmasify("Thank you so much!"));
+            return;
+        }
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        Component page = Component.join(JoinConfiguration.noSeparators(), new Component[] {
+                Attraction.xmasify("Winter Woods Villager"),
+                Component.newline(),
+                Component.newline(),
+                Component.text(xmasPresent.request),
+                Component.newline(),
+                Component.newline(),
+                (DefaultFont.OK_BUTTON.component
+                 .hoverEvent(HoverEvent.showText(Attraction.xmasify("Help this Villager")))
+                 .clickEvent(ClickEvent.runCommand("/xmas trader " + xmasPresent.name()))),
+            });
+        book.editMeta(m -> {
+                BookMeta meta = (BookMeta) m;
+                meta.setAuthor("Cavetale");
+                meta.title(Component.text("Christmas"));
+                meta.pages(List.of(page));
+            });
+        player.openBook(book);
+    }
+
+    protected void onClickPresentInventory(Player player, XmasPresent clicked, XmasPresent trader) {
+        if (clicked != trader) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.MASTER, 0.5f, 0.5f);
+            return;
+        }
+        Session session = sessionOf(player);
+        if (session.tag.presentsGiven.contains(trader) || !session.tag.presentList.contains(trader)) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, SoundCategory.MASTER, 0.5f, 0.5f);
+            return;
+        }
+        session.tag.presentsGiven.add(trader);
+        session.tag.presentList.remove(trader);
+        session.tag.keys += 1;
+        session.save();
+        player.closeInventory();
+        Music.DECK_THE_HALLS.melody.play(this, player);
+        player.showTitle(Title.title(Mytems.GOLDEN_KEY.component,
+                                     Attraction.xmasify("You received a golden key!")));
     }
 }

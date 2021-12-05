@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
 public final class RepeatMelodyAttraction extends Attraction<RepeatMelodyAttraction.SaveTag> {
     protected Melody melody = null;
     @Setter protected Instrument instrument = Instrument.PIANO;
-    @Setter protected int octave = 1;
+    @Setter protected int octave = 0;
 
     protected RepeatMelodyAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
@@ -114,7 +114,7 @@ public final class RepeatMelodyAttraction extends Attraction<RepeatMelodyAttract
         }
         Collections.shuffle(semis, random);
         semis = new ArrayList<>(semis.subList(0, random.nextInt(4)));
-        for (int i = 0; i < 8; i += 1) {
+        for (int i = 0; i < 7; i += 1) {
             Tone tone = tones[random.nextInt(tones.length)];
             if (semis.contains(tone)) {
                 melodyBuilder.beat(6, tone, semitone, octave);
