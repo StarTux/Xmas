@@ -76,13 +76,16 @@ public final class XmasPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        dailyPrizes = List
-            .of(new ItemStack(Material.DIAMOND, 20),
-                Mytems.KITTY_COIN.createItemStack(2),
-                new ItemStack(Material.TNT, 64),
-                Mytems.RUBY.createItemStack(3),
-                Mytems.STAR.createItemStack(),
-                Mytems.MOB_CATCHER.createItemStack(16));
+        dailyPrizes = List.of(new ItemStack[] {
+                new ItemStack(Material.DIAMOND, 20), // 1
+                Mytems.KITTY_COIN.createItemStack(2), // 2
+                new ItemStack(Material.TNT, 64), // 3
+                Mytems.RUBY.createItemStack(3), // 4
+                Mytems.STAR.createItemStack(), // 5
+                Mytems.MOB_CATCHER.createItemStack(16), // 6
+                new ItemStack(Material.GLOWSTONE, 64), // 7
+                new ItemStack(Material.BONE_BLOCK, 64), // 8
+            });
         xmasCommand.enable();
         adminCommand.enable();
         eventListener.enable();

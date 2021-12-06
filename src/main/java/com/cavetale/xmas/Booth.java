@@ -42,7 +42,12 @@ public enum Booth {
                   Component.text("Music Piracy"),
                   Component.text("Repeat after me, but don't steal my music!"),
                   XmasPresent.KNITTED_HAT,
-                  a -> ((RepeatMelodyAttraction) a).set(Instrument.BANJO, 0));
+                  a -> ((RepeatMelodyAttraction) a).set(Instrument.BANJO, 0)),
+    TRAZAO_RUDOLPH_HERO(AttractionType.MUSIC_HERO, 7,
+                        Component.text("Rudolph"),
+                        Component.text("Learn a song about the reindeer with a red shiny nose?"),
+                        XmasPresent.ARMCHAIR,
+                        a -> ((MusicHeroAttraction) a).setMusic(Music.RUDOLPH));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
