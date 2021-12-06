@@ -188,14 +188,27 @@ public final class MusicHeroAttraction extends Attraction<MusicHeroAttraction.Sa
             if (beat.instrument != null) continue;
             notes.add(Component.text(beat.toString(), NamedTextColor.BLUE));
         }
+        List<List<Component>> notePages = new ArrayList<>();
+        final int pageLen = 72;
+        for (int i = 0; i < notes.size(); i += pageLen) {
+            notePages.add(List.copyOf(notes.subList(i, Math.min(i + pageLen, notes.size()))));
+        }
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        List<Component> pages = new ArrayList<>();
+        pages.add(!keys.isEmpty()
+                  ? Component.join(JoinConfiguration.separator(Component.newline()), new Component[] {
+                          Component.join(JoinConfiguration.separator(Component.space()), keys),
+                          Component.empty(),
+                          Component.join(JoinConfiguration.separator(Component.space()), notePages.get(0)),
+                      })
+                  : Component.join(JoinConfiguration.separator(Component.space()), notePages.get(0)));
+        for (int i = 1; i < notePages.size(); i += 1) {
+            pages.add(Component.join(JoinConfiguration.separator(Component.space()),
+                                     notePages.get(i)));
+        }
         book.editMeta(m -> {
                 BookMeta meta = (BookMeta) m;
-                meta.pages(List.of(Component.join(JoinConfiguration.separator(Component.newline()), new Component[] {
-                                Component.join(JoinConfiguration.separator(Component.space()), keys),
-                                Component.empty(),
-                                Component.join(JoinConfiguration.separator(Component.space()), notes),
-                            })));
+                meta.pages(pages);
                 meta.setAuthor("Cavetale");
                 meta.title(displayName);
             });
