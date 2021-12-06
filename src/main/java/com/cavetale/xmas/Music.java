@@ -160,7 +160,83 @@ public enum Music {
                  .beat(4, C, 1).beat(4, C, 1).beat(6, C, 1).beat(2, C, 1)
                  .beat(4, C, 1).beat(4, B, 1).beat(4, B, 1).beat(2, B, 1).beat(2, B, 1)
                  .beat(4, D, 1).beat(4, D, 1).beat(4, C, 1).beat(4, A, 1)
-                 .beat(16, G, 1));
+                 .beat(16, G, 1)),
+
+    RUDOLPH(Instrument.PIANO, 50L, Map.of(), b -> b
+            .beat(2, G, 1).beat(4, A, 1).beat(2, G, 1).beat(4, E, 0).beat(4, C, 1)
+            .beat(4, A, 1).beat(0, E, 0).beat(12, G, 1)
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, C, 1)
+            .beat(0, F, 0).beat(16, B, 1)
+            .beat(2, F, 0).beat(4, G, 1).beat(2, F, 0).beat(4, D, 0).beat(4, B, 1)
+            .beat(4, A, 1).beat(12, G, 1)
+            // Line 2
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, A, 1)
+            .beat(16, E, 0)
+            .beat(2, G, 1).beat(4, A, 1).beat(2, G, 1).beat(4, E, 0).beat(4, C, 1)
+            .beat(4, A, 1).beat(12, G, 1)
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, C, 1)
+            .beat(0, F, 0).beat(16, B, 1)
+            // Line 3
+            .beat(2, F, 0).beat(4, G, 1).beat(2, F, 0).beat(4, D, 0).beat(4, B, 1)
+            .beat(4, A, 1).beat(12, G, 1)
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, D, 1)
+            .beat(0, E, 0).beat(16, C, 1)
+            .beat(4, A, 1).beat(4, A, 1).beat(4, C, 1).beat(4, A, 1)
+            .beat(4, G, 1).beat(4, E, 0).beat(8, G, 1)
+            // Line 4
+            .beat(4, F, 0).beat(4, A, 1).beat(4, G, 1).beat(4, F, 0)
+            .beat(0, C, 0).beat(16, E, 0)
+            .beat(4, D, 0).beat(4, E, 0).beat(4, G, 1).beat(4, A, 1)
+            .beat(4, B, 1).beat(4, B, 1).beat(8, B, 1)
+            .beat(4, D, 1).beat(4, C, 1).beat(4, B, 1).beat(4, A, 1)
+            .beat(4, G, 1).beat(4, F, 0).beat(8, D, 0)
+            .beat(2, G, 1).beat(4, A, 1).beat(2, G, 1).beat(4, E, 0).beat(4, C, 1)
+            // Line 5
+            .beat(4, A, 1).beat(0, E, 0).beat(12, G, 1)
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, C, 1)
+            .beat(0, F, 0).beat(16, B, 1)
+            .beat(2, F, 0).beat(4, G, 1).beat(2, F, 0).beat(4, D, 0).beat(4, B, 1)
+            .beat(4, A, 1).beat(12, G, 1)
+            .beat(2, G, 1).beat(2, A, 1).beat(2, G, 1).beat(2, A, 1).beat(4, G, 1).beat(4, D, 1)
+            .beat(0, E, 0).beat(16, C, 1)
+            // Left Hand
+            .extra(Instrument.GUITAR)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            // Line 2
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            // Line 3
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0)
+            .beat(16, F, 0)
+            .beat(12, C, 0).beat(4, C, SHARP, 0)
+            // Line 4
+            .beat(8, D, 0).beat(8, G, 1)
+            .beat(0, C, 0).beat(16, G, 1)
+            .beat(16, G, 0)
+            .beat(12, G, 1).beat(4, G, SHARP, 1)
+            .beat(0, D, 0).beat(16, A, 1)
+            .beat(0, G, 1).beat(16, B, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            // Line 6
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(4, C, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
+            .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0));
 
     public final Instrument instrument;
     public final long speed;
