@@ -213,6 +213,14 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.MASTER, 0.3f, 2.0f);
     }
 
+    protected final void playerLeftArea(Player player) {
+        plugin.sessionOf(player).setCooldown(this, Duration.ofMinutes(1));
+        player.showTitle(Title.title(xmasify("Game Over"), xmasify("You left the house")));
+        player.sendActionBar(Component.empty());
+        Music.GRINCH.melody.play(plugin, player);
+        stop();
+    }
+
     protected final ItemStack randomPrize() {
         List<ItemStack> pool = PRIZE_POOL.get(random.nextInt(PRIZE_POOL.size()));
         return pool.get(random.nextInt(pool.size()));
@@ -267,8 +275,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
             : null;
         if (player == null) return null;
         if (!isInArea(player.getLocation())) {
-            plugin.sessionOf(player).setCooldown(this, Duration.ofMinutes(1));
-            stop();
+            playerLeftArea(player);
             return null;
         }
         return player;
@@ -309,6 +316,8 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
             Component message = xmasify("Give others a chance and wait " + minutes + "m " + seconds + "s");
             player.sendMessage(message);
             player.sendActionBar(message);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL,
+                             SoundCategory.MASTER, 0.5f, 0.5f);
             return false;
         }
         return true;
@@ -328,6 +337,8 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
             }).color(NamedTextColor.RED);
         player.sendMessage(message);
         player.sendActionBar(message);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL,
+                         SoundCategory.MASTER, 0.5f, 0.5f);
         return false;
     }
 
@@ -339,12 +350,14 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
             }
         }
         Component message = Component.join(JoinConfiguration.noSeparators(), new Component[] {
-                Component.text("You don't have a "),
+                Component.text("Get your "),
                 Mytems.ANGELIC_HARP.component,
-                Component.text("musical instrument!"),
+                Component.text("Musical Instrument at the Midnight Estates!"),
             }).color(NamedTextColor.RED);
         player.sendMessage(message);
         player.sendActionBar(message);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL,
+                         SoundCategory.MASTER, 0.5f, 0.5f);
         return false;
     }
 
@@ -363,6 +376,8 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
             }).color(NamedTextColor.RED);
         player.sendMessage(message);
         player.sendActionBar(message);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL,
+                         SoundCategory.MASTER, 0.5f, 0.5f);
         return false;
     }
 

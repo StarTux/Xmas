@@ -39,7 +39,32 @@ public enum XmasPresent {
              "I hope Santa brings me something comfortable to sit in and relax."),
     KNITTED_HAT(Mytems.SANTA_HAT,
                 "Knitted Hat",
-                "The cold outside hurts my ears. Have you seen my hat?");
+                "The cold outside hurts my ears. Have you seen my hat?"),
+    CHRISTMAS_BALL(Mytems.BLUE_CHRISTMAS_BALL, // 8
+                   "Christmas Ball",
+                   "I'm decorating my Christmas tree, but something's missing..."),
+    SNOW_SHOVEL(Mytems.SNOW_SHOVEL, // 9
+                "Snow Shovel",
+                "I desperately need to clear my front yard of all this new snow!"),
+    PRESENT(Mytems.CHRISTMAS_TOKEN, // 10
+            "Wrapped Present",
+            "I'm so late on my Christmas shopping this year!"
+            + " I'm missing a wrapped present for my sister."),
+    SANTAS_LIST(Mytems.MAGIC_MAP, // 11
+                "Santa's List",
+                "Can you keep a secret? I'll be Santa this year,"
+                + " but I lost my list somewhere..."),
+    ONION(Mytems.ORANGE_ONION, // 12
+          "Festive Onion",
+          "I'm making my delicious Christmas stew but ran out of onions!"),
+    DODO_EGG(Mytems.EASTER_EGG, // 13
+             "Dodo Egg",
+             "For my next cake, I need the egg from a dodo."
+             + " Unfortunately, not many dodos have been around here lately."),
+    SCARY_PUMPKIN(Mytems.KINGS_PUMPKIN, // 14
+                  "Scary Pumpkin",
+                  "I want to make an even better snowman,"
+                  + " but my last pumpkin with a face got lost around Halloween.");
 
     public final Mytems mytems;
     public final String itemName;

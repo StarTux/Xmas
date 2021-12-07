@@ -47,7 +47,18 @@ public enum Booth {
                         Component.text("Rudolph"),
                         Component.text("Learn a song about the reindeer with a red shiny nose?"),
                         XmasPresent.ARMCHAIR,
-                        a -> ((MusicHeroAttraction) a).setMusic(Music.RUDOLPH));
+                        a -> ((MusicHeroAttraction) a).setMusic(Music.RUDOLPH)),
+    HOTEL_BUNNIES(AttractionType.FIND_BUNNY, 8,
+                  Component.text("Home Alone with Bunnies"),
+                  Component.text("My manor is overrun with bunnies,"
+                                 + " and they are scaring my guests!"),
+                  XmasPresent.CHRISTMAS_BALL, null),
+    SANTA_HAT_MELODY(AttractionType.REPEAT_MELODY, 9,
+                     Component.text("Musical Balcony"),
+                     Component.text("Oh hi, friend!"
+                                    + " Looking for some musical exercise?"),
+                     XmasPresent.SNOW_SHOVEL,
+                     a -> ((RepeatMelodyAttraction) a).set(Instrument.BELL, 0));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;

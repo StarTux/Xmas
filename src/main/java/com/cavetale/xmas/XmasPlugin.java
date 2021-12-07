@@ -245,7 +245,8 @@ public final class XmasPlugin extends JavaPlugin {
         }
         for (XmasPresent xmasPresent : XmasPresent.values()) {
             if (xmasPresent.ordinal() >= regions.size()) {
-                throw new IllegalStateException("Trader list too short!");
+                getLogger().warning("Trader list too short for " + xmasPresent);
+                break;
             }
             Cuboid cuboid = regions.get(xmasPresent.ordinal());
             PluginSpawn traderSpawn = PluginSpawn.register(this, ZoneType.CHRISTMAS, Loc.of(cuboid.min.toLocation(world)));
