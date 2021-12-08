@@ -85,6 +85,7 @@ public final class XmasPlugin extends JavaPlugin {
                 Mytems.MOB_CATCHER.createItemStack(16), // 6
                 new ItemStack(Material.GLOWSTONE, 64), // 7
                 new ItemStack(Material.BONE_BLOCK, 64), // 8
+                new ItemStack(Material.AMETHYST_SHARD, 64), // 9
             });
         xmasCommand.enable();
         adminCommand.enable();
