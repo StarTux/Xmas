@@ -236,7 +236,69 @@ public enum Music {
             .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
             .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
             .beat(4, D, 0).beat(4, G, 1).beat(4, G, 0).beat(4, G, 1)
-            .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0));
+            .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0)),
+
+    TANNENBAUM(PLING, 100L, Map.of(B, FLAT), b -> b
+                 .beat(2, C, 0) // O
+
+                 .beat(3, F, 0) // Tan
+                 .beat(1, F, 0) // nen
+                 .beat(3, F, 0) // baum,
+                 .beat(2, G, 1) // o
+
+                 .beat(3, A, 1) // Tan
+                 .beat(1, A, 1) // nen
+                 .beat(3, A, 1) // baum,
+                 .beat(2, A, 1) // wie
+
+                 .beat(2, G, 1) // treu
+                 .beat(2, A, 1) // sind
+                 .beat(4, B, 1) // dei
+                 .beat(4, E, 0) // ne
+
+                 .beat(4, G, 1) // Blaet
+                 .beat(4, F, 0) // ter
+                 .pause(4)
+                 .beat(2, C, 1) // Du
+
+                 .beat(2, C, 1) // gruenst
+                 .beat(2, A, 1) // nicht
+                 .beat(6, D, 1) // nur
+                 .beat(2, C, 1) // zur
+
+                 .beat(2, C, 1) // Som
+                 .beat(2, B, 1) // mer
+                 .beat(6, B, 1) // zeit,
+                 .beat(2, B, 1) // nein,
+
+                 .beat(2, B, 1) // auch
+                 .beat(2, G, 1) // im
+                 .beat(6, C, 1) // Win
+                 .beat(2, B, 1) // ter,
+
+                 .beat(2, B, 1) // wenn
+                 .beat(2, A, 1) // es
+                 .beat(4, A, 1) // schneit.
+                 .pause(4)
+                 .beat(2, C, 0) // O
+
+                 .beat(3, F, 0) // Tan
+                 .beat(1, F, 0) // nen
+                 .beat(3, F, 0) // baum,
+                 .beat(2, G, 1) // o
+
+                 .beat(3, A, 1) // Tan
+                 .beat(1, A, 1) // nen
+                 .beat(3, A, 1) // baum,
+                 .beat(2, A, 1) // wie
+
+                 .beat(2, G, 1) // treu
+                 .beat(2, A, 1) // sind
+                 .beat(4, B, 1) // dei
+                 .beat(4, E, 0) // ne
+
+                 .beat(4, G, 1) // Blaet
+                 .beat(4, F, 0)); // ter
 
     public final Instrument instrument;
     public final long speed;

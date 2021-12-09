@@ -2,8 +2,10 @@ package com.cavetale.xmas;
 
 import com.cavetale.xmas.attraction.Attraction;
 import com.cavetale.xmas.attraction.AttractionType;
+import com.cavetale.xmas.attraction.FindBunnyAttraction;
 import com.cavetale.xmas.attraction.MusicHeroAttraction;
 import com.cavetale.xmas.attraction.RepeatMelodyAttraction;
+import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,7 +60,17 @@ public enum Booth {
                      Component.text("Oh hi, friend!"
                                     + " Looking for some musical exercise?"),
                      XmasPresent.SNOW_SHOVEL,
-                     a -> ((RepeatMelodyAttraction) a).set(Instrument.BELL, 0));
+                     a -> ((RepeatMelodyAttraction) a).set(Instrument.BELL, 0)),
+    TANNENBAUM_HERO(AttractionType.MUSIC_HERO, 10,
+                    Component.text("O Tannenbaum"),
+                    Component.text("Learn this song about the Christmas Tree?"),
+                    XmasPresent.PRESENT,
+                    a -> ((MusicHeroAttraction) a).setMusic(Music.TANNENBAUM)),
+    ADIS_BUNNIES(AttractionType.FIND_BUNNY, 11,
+                 Component.text("Bunny Mansion"),
+                 Component.text("There are bunnies everywhere! Please help!!!"),
+                 XmasPresent.SANTAS_LIST,
+                 a -> ((FindBunnyAttraction) a).setSearchTime(Duration.ofSeconds(80)));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;

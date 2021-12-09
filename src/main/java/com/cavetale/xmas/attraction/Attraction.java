@@ -431,6 +431,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
                         VanillaItems.DIAMOND.component,
                         Component.text("Diamond?"),
                         Component.newline(),
+                        Component.newline(),
                         (DefaultFont.START_BUTTON.component
                          .clickEvent(ClickEvent.runCommand("/xmas yes " + name))
                          .hoverEvent(HoverEvent.showText(Component.text("Play this Game", NamedTextColor.GREEN)))),
