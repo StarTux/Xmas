@@ -392,6 +392,9 @@ public final class XmasPlugin extends JavaPlugin {
             ItemStack icon = Mytems.QUESTION_MARK.createIcon(tooltip);
             gui.setItem(slot, icon, click -> {
                     if (!click.isLeftClick()) return;
+                    player.closeInventory();
+                });
+            gui.onClose(evt -> {
                     Music.DECK_THE_HALLS.melody.play(this, player);
                     openPrize(player, prize, false);
                 });
