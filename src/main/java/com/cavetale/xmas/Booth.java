@@ -70,7 +70,13 @@ public enum Booth {
                  Component.text("Bunny Mansion"),
                  Component.text("There are bunnies everywhere! Please help!!!"),
                  XmasPresent.SANTAS_LIST,
-                 a -> ((FindBunnyAttraction) a).setSearchTime(Duration.ofSeconds(80)));
+                 a -> ((FindBunnyAttraction) a).setSearchTime(Duration.ofSeconds(80))),
+    BEAMY_COTTAGE_MUSIC(AttractionType.REPEAT_MELODY, 12,
+                        Component.text("Cottage Jam Session"),
+                        Component.text("A good melody is sweet like a sugar cane."
+                                       + " Repeat after me!"),
+                        XmasPresent.ONION,
+                        a -> ((RepeatMelodyAttraction) a).set(Instrument.COW_BELL, 0));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;

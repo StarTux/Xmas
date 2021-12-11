@@ -88,7 +88,13 @@ public final class XmasPlugin extends JavaPlugin {
                 new ItemStack(Material.AMETHYST_SHARD, 64), // 9
                 new ItemStack(Material.TOTEM_OF_UNDYING), // 10
                 new ItemStack(Material.GOLDEN_CARROT, 64), // 11
-                Mytems.HEART.createItemStack(), // 12
+                new ItemStack(Material.ANCIENT_DEBRIS, 16), // 12
+                new ItemStack(Material.GOLD_INGOT, 64), // 13
+                new ItemStack(Material.POINTED_DRIPSTONE, 64), // 14
+                new ItemStack(Material.MOSS_BLOCK, 64), // 15
+                new ItemStack(Material.COPPER_BLOCK, 64), // 16
+                Mytems.HEART.createItemStack(), // 17
+                Mytems.MOON.createItemStack(), // 18
             });
         xmasCommand.enable();
         adminCommand.enable();
