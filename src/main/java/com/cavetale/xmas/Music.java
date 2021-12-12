@@ -300,7 +300,7 @@ public enum Music {
                .beat(4, G, 1) // Blaet
                .beat(4, F, 0)), // ter
 
-    O_DU_FROEHLICHE(PIANO, 50L, Map.of(), b -> b
+    O_DU_FROEHLICHE(PIANO, 100L, Map.of(), b -> b
                     .beat(8, G, 1) .beat(8, A, 1) // O du
                     .beat(6, G, 1) .beat(2, F, 0) .beat(4, E, 0) .beat(4, F, 0) // froehliche
                     .beat(8, G, 1) .beat(8, A, 1) // o do
