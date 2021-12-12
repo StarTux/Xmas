@@ -239,66 +239,87 @@ public enum Music {
             .beat(4, C, 0).beat(4, G, 1).beat(8, C, 0)),
 
     TANNENBAUM(PLING, 100L, Map.of(B, FLAT), b -> b
-                 .beat(2, C, 0) // O
+               .beat(2, C, 0) // O
 
-                 .beat(3, F, 0) // Tan
-                 .beat(1, F, 0) // nen
-                 .beat(3, F, 0) // baum,
-                 .beat(2, G, 1) // o
+               .beat(3, F, 0) // Tan
+               .beat(1, F, 0) // nen
+               .beat(3, F, 0) // baum,
+               .beat(2, G, 1) // o
 
-                 .beat(3, A, 1) // Tan
-                 .beat(1, A, 1) // nen
-                 .beat(3, A, 1) // baum,
-                 .beat(2, A, 1) // wie
+               .beat(3, A, 1) // Tan
+               .beat(1, A, 1) // nen
+               .beat(3, A, 1) // baum,
+               .beat(2, A, 1) // wie
 
-                 .beat(2, G, 1) // treu
-                 .beat(2, A, 1) // sind
-                 .beat(4, B, 1) // dei
-                 .beat(4, E, 0) // ne
+               .beat(2, G, 1) // treu
+               .beat(2, A, 1) // sind
+               .beat(4, B, 1) // dei
+               .beat(4, E, 0) // ne
 
-                 .beat(4, G, 1) // Blaet
-                 .beat(4, F, 0) // ter
-                 .pause(4)
-                 .beat(2, C, 1) // Du
+               .beat(4, G, 1) // Blaet
+               .beat(4, F, 0) // ter
+               .pause(4)
+               .beat(2, C, 1) // Du
 
-                 .beat(2, C, 1) // gruenst
-                 .beat(2, A, 1) // nicht
-                 .beat(6, D, 1) // nur
-                 .beat(2, C, 1) // zur
+               .beat(2, C, 1) // gruenst
+               .beat(2, A, 1) // nicht
+               .beat(6, D, 1) // nur
+               .beat(2, C, 1) // zur
 
-                 .beat(2, C, 1) // Som
-                 .beat(2, B, 1) // mer
-                 .beat(6, B, 1) // zeit,
-                 .beat(2, B, 1) // nein,
+               .beat(2, C, 1) // Som
+               .beat(2, B, 1) // mer
+               .beat(6, B, 1) // zeit,
+               .beat(2, B, 1) // nein,
 
-                 .beat(2, B, 1) // auch
-                 .beat(2, G, 1) // im
-                 .beat(6, C, 1) // Win
-                 .beat(2, B, 1) // ter,
+               .beat(2, B, 1) // auch
+               .beat(2, G, 1) // im
+               .beat(6, C, 1) // Win
+               .beat(2, B, 1) // ter,
 
-                 .beat(2, B, 1) // wenn
-                 .beat(2, A, 1) // es
-                 .beat(4, A, 1) // schneit.
-                 .pause(4)
-                 .beat(2, C, 0) // O
+               .beat(2, B, 1) // wenn
+               .beat(2, A, 1) // es
+               .beat(4, A, 1) // schneit.
+               .pause(4)
+               .beat(2, C, 0) // O
 
-                 .beat(3, F, 0) // Tan
-                 .beat(1, F, 0) // nen
-                 .beat(3, F, 0) // baum,
-                 .beat(2, G, 1) // o
+               .beat(3, F, 0) // Tan
+               .beat(1, F, 0) // nen
+               .beat(3, F, 0) // baum,
+               .beat(2, G, 1) // o
 
-                 .beat(3, A, 1) // Tan
-                 .beat(1, A, 1) // nen
-                 .beat(3, A, 1) // baum,
-                 .beat(2, A, 1) // wie
+               .beat(3, A, 1) // Tan
+               .beat(1, A, 1) // nen
+               .beat(3, A, 1) // baum,
+               .beat(2, A, 1) // wie
 
-                 .beat(2, G, 1) // treu
-                 .beat(2, A, 1) // sind
-                 .beat(4, B, 1) // dei
-                 .beat(4, E, 0) // ne
+               .beat(2, G, 1) // treu
+               .beat(2, A, 1) // sind
+               .beat(4, B, 1) // dei
+               .beat(4, E, 0) // ne
 
-                 .beat(4, G, 1) // Blaet
-                 .beat(4, F, 0)); // ter
+               .beat(4, G, 1) // Blaet
+               .beat(4, F, 0)), // ter
+
+    O_DU_FROEHLICHE(PIANO, 50L, Map.of(), b -> b
+                    .beat(8, G, 1) .beat(8, A, 1) // O du
+                    .beat(6, G, 1) .beat(2, F, 0) .beat(4, E, 0) .beat(4, F, 0) // froehliche
+                    .beat(8, G, 1) .beat(8, A, 1) // o do
+                    .beat(6, G, 1) .beat(2, F, 0) .beat(4, E, 0) .beat(4, F, 0) // selige
+                    // Line 2
+                    .beat(8, G, 1) .beat(8, G, 1) // gnaden
+                    .beat(8, A, 1) .beat(4, B, 1) .beat(4, C, 1) // bringende
+                    .beat(8, B, 1) .beat(8, A, 1) // Weihnachts
+                    .beat(12, G, 1) .pause(4) // zeit
+                    // Line 3
+                    .beat(6, D, 0) .beat(2, E, 0) .beat(4, D, 0) .beat(4, E, 0) // Welt ging ver-
+                    .beat(6, F, 0) .beat(2, G, 1) .beat(8, F, 0) // loren,
+                    .beat(6, E, 0) .beat(2, F, 0) .beat(4, E, 0) .beat(4, F, 0) // Christ ist ge-
+                    .beat(6, G, 1) .beat(2, A, 1) .beat(8, G, 1) // boren
+                    // Line 4
+                    .beat(4, C, 1) .beat(4, B, 1) .beat(4, A, 1) .beat(4, G, 1) // Freue
+                    .beat(4, C, 1) .beat(4, A, 1) .beat(4, G, 1) .beat(4, F, 1) // freue dich, o
+                    .beat(8, E, 0) .beat(8, D, 0) // Christen-
+                    .beat(12, C, 0) .pause(4)); // heit!
 
     public final Instrument instrument;
     public final long speed;

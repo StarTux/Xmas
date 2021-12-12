@@ -76,7 +76,12 @@ public enum Booth {
                         Component.text("A good melody is sweet like a sugar cane."
                                        + " Repeat after me!"),
                         XmasPresent.ONION,
-                        a -> ((RepeatMelodyAttraction) a).set(Instrument.COW_BELL, 0));
+                        a -> ((RepeatMelodyAttraction) a).set(Instrument.COW_BELL, 0)),
+    FROEHLICHE(AttractionType.MUSIC_HERO, 13,
+               Component.text("O Du Fröhliche"),
+               Component.text("This is one of my favorites! Do you speak German?"),
+               XmasPresent.DODO_EGG,
+               a -> ((MusicHeroAttraction) a).setMusic(Music.O_DU_FROEHLICHE));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
