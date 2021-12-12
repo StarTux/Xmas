@@ -317,7 +317,7 @@ public enum Music {
                     .beat(6, G, 1) .beat(2, A, 1) .beat(8, G, 1) // boren
                     // Line 4
                     .beat(4, C, 1) .beat(4, B, 1) .beat(4, A, 1) .beat(4, G, 1) // Freue
-                    .beat(4, C, 1) .beat(4, A, 1) .beat(4, G, 1) .beat(4, F, 1) // freue dich, o
+                    .beat(4, C, 1) .beat(4, A, 1) .beat(4, G, 1) .beat(4, F, 0) // freue dich, o
                     .beat(8, E, 0) .beat(8, D, 0) // Christen-
                     .beat(12, C, 0) .pause(4)); // heit!
 
