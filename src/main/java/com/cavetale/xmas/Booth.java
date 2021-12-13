@@ -81,7 +81,13 @@ public enum Booth {
                Component.text("O Du Fröhliche"),
                Component.text("This is one of my favorites! Do you speak German?"),
                XmasPresent.DODO_EGG,
-               a -> ((MusicHeroAttraction) a).setMusic(Music.O_DU_FROEHLICHE));
+               a -> ((MusicHeroAttraction) a).setMusic(Music.O_DU_FROEHLICHE)),
+    DMS_BUNNIES(AttractionType.FIND_BUNNY, 14,
+                Component.text("Carrot Enthusiast"),
+                Component.text("This guy over there filled my house with carrots."
+                               + " It attracts the bunnies. Can you catch them?"),
+                XmasPresent.SCARY_PUMPKIN,
+                a -> ((FindBunnyAttraction) a).setSearchTime(Duration.ofSeconds(60)));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
