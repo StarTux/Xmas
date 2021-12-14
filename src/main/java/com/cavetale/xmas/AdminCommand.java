@@ -4,6 +4,7 @@ import com.cavetale.core.command.AbstractCommand;
 import com.cavetale.core.command.CommandArgCompleter;
 import com.cavetale.core.command.CommandWarn;
 import com.cavetale.mytems.item.music.MelodyReplay;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -88,23 +89,33 @@ public final class AdminCommand extends AbstractCommand<XmasPlugin> {
         if (args.length != 2) return false;
         Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) throw new CommandWarn("Player not found: " + args[0]);
-        XmasPresent xmasPresent;
-        try {
-            xmasPresent = XmasPresent.valueOf(args[1].toUpperCase());
-        } catch (IllegalArgumentException iae) {
-            throw new CommandWarn("Present not found: " + args[1]);
+        List<XmasPresent> xmasPresents;
+        if (args[1].equals("*")) {
+            xmasPresents = List.of(XmasPresent.values());
+        } else {
+            try {
+                xmasPresents = List.of(XmasPresent.valueOf(args[1].toUpperCase()));
+            } catch (IllegalArgumentException iae) {
+                throw new CommandWarn("Present not found: " + args[1]);
+            }
         }
         Session session = plugin.sessionOf(target);
-        boolean has = session.tag.presentList.contains(xmasPresent);
-        if (!has) {
-            session.tag.presentList.add(xmasPresent);
+        int count = 0;
+        for (XmasPresent xmasPresent : xmasPresents) {
+            boolean has = session.tag.presentList.contains(xmasPresent);
+            if (!has) {
+                session.tag.presentList.add(xmasPresent);
+                count += 1;
+            }
+        }
+        if (count > 0) {
             session.save();
         }
-        plugin.openPresentInventory(target, xmasPresent, null);
-        if (!has) {
-            sender.sendMessage("Given " + xmasPresent + " to " + target.getName());
+        plugin.openPresentInventory(target, xmasPresents.get(0), null);
+        if (count > 0) {
+            sender.sendMessage("Given " + count + " presents to " + target.getName());
         } else {
-            sender.sendMessage("Fake given " + xmasPresent + " to " + target.getName());
+            sender.sendMessage("Fake given " + xmasPresents.size() + " presents to " + target.getName());
         }
         return true;
     }
