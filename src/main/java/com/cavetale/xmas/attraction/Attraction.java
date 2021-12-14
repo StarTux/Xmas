@@ -35,6 +35,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -107,6 +108,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         case MUSIC_HERO: return new MusicHeroAttraction(plugin, name, areaList, booth);
         case FIND_BUNNY: return new FindBunnyAttraction(plugin, name, areaList, booth);
         case REPEAT_MELODY: return new RepeatMelodyAttraction(plugin, name, areaList, booth);
+        case POSTER: return new PosterAttraction(plugin, name, areaList, booth);
         default:
             throw new IllegalArgumentException(type + ": Not implemented!");
         }
@@ -264,6 +266,10 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         return xmasify(Unicode.WATCH.string + seconds + " " + prefix + has + "/" + max);
     }
 
+    protected final Component makeProgressComponent(int seconds) {
+        return xmasify(Unicode.WATCH.string + seconds);
+    }
+
     /**
      * Override me to tell if this attraction is currently playing!
      */
@@ -362,6 +368,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
     }
 
     protected final boolean takeEntryFee(Player player) {
+        if (player.getGameMode() == GameMode.CREATIVE) return true;
         ItemStack entryFee = new ItemStack(Material.DIAMOND);
         for (ItemStack itemStack : player.getInventory()) {
             if (entryFee.isSimilar(itemStack)) {

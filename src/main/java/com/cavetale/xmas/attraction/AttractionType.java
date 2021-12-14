@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 public enum AttractionType {
     FIND_BUNNY(FindBunnyAttraction.class),
     REPEAT_MELODY(RepeatMelodyAttraction.class),
-    MUSIC_HERO(MusicHeroAttraction.class);
+    MUSIC_HERO(MusicHeroAttraction.class),
+    POSTER(PosterAttraction.class);
 
     public final Class<? extends Attraction> type;
 
