@@ -4,6 +4,7 @@ import com.cavetale.xmas.attraction.Attraction;
 import com.cavetale.xmas.attraction.AttractionType;
 import com.cavetale.xmas.attraction.FindBunnyAttraction;
 import com.cavetale.xmas.attraction.MusicHeroAttraction;
+import com.cavetale.xmas.attraction.PetPileAttraction;
 import com.cavetale.xmas.attraction.PosterAttraction;
 import com.cavetale.xmas.attraction.RepeatMelodyAttraction;
 import java.time.Duration;
@@ -90,10 +91,16 @@ public enum Booth {
                 XmasPresent.SCARY_PUMPKIN,
                 a -> ((FindBunnyAttraction) a).setSearchTime(Duration.ofSeconds(60))),
     BLACKOUT_POSTER(AttractionType.POSTER, 15,
-            Component.text("Mosaic"),
-            Component.text("My drawing got all messed up. Can you put it in the right order?"),
-            XmasPresent.CHOCOLATE,
-            a -> ((PosterAttraction) a).setPoster("XmasBlackoutPoster"));
+                    Component.text("Mosaic"),
+                    Component.text("My drawing got all messed up. Can you put it in the right order?"),
+                    XmasPresent.CHOCOLATE,
+                    a -> ((PosterAttraction) a).setPoster("XmasBlackoutPoster")),
+    SHEEP_CAT_PILE(AttractionType.PET_PILE, 16,
+                 Component.text("Sorting out Cats"),
+                 Component.text("Quick, close the doors! I need to sort out my cats."
+                                + " Can you find the one I'm looking for?"),
+                 XmasPresent.PALETTE,
+                 a -> ((PetPileAttraction) a).setCats());
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;

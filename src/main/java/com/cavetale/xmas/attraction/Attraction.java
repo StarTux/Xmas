@@ -109,6 +109,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         case FIND_BUNNY: return new FindBunnyAttraction(plugin, name, areaList, booth);
         case REPEAT_MELODY: return new RepeatMelodyAttraction(plugin, name, areaList, booth);
         case POSTER: return new PosterAttraction(plugin, name, areaList, booth);
+        case PET_PILE: return new PetPileAttraction(plugin, name, areaList, booth);
         default:
             throw new IllegalArgumentException(type + ": Not implemented!");
         }

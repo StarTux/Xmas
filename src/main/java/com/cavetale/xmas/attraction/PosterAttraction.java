@@ -198,20 +198,20 @@ public final class PosterAttraction extends Attraction<PosterAttraction.SaveTag>
 
     @Override
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (saveTag.state != State.PLAY) return;
-        Player player = getCurrentPlayer();
-        if (!event.getPlayer().equals(player)) return;
-        Frame frame = frameOfEntity(event.getRightClicked().getUniqueId());
-        if (frame == null) return;
-        onClickFrame(player, frame);
+        onPlayerUseEntity(event.getPlayer(), event.getRightClicked());
     }
 
     @Override
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player player) {
+            onPlayerUseEntity(player, event.getEntity());
+        }
+    }
+
+    protected void onPlayerUseEntity(Player player, Entity used) {
         if (saveTag.state != State.PLAY) return;
-        Player player = getCurrentPlayer();
-        if (!event.getDamager().equals(player)) return;
-        Frame frame = frameOfEntity(event.getEntity().getUniqueId());
+        if (!player.equals(getCurrentPlayer())) return;
+        Frame frame = frameOfEntity(used.getUniqueId());
         if (frame == null) return;
         onClickFrame(player, frame);
     }
@@ -252,7 +252,6 @@ public final class PosterAttraction extends Attraction<PosterAttraction.SaveTag>
             @Override protected void enter(PosterAttraction instance) {
                 instance.despawnAllPosters();
                 instance.saveTag.frames = null;
-                instance.save();
             }
         },
         PLAY {
@@ -260,7 +259,6 @@ public final class PosterAttraction extends Attraction<PosterAttraction.SaveTag>
                 instance.saveTag.playStarted = System.currentTimeMillis();
                 instance.shownTime = -1;
                 instance.rollPoster();
-                instance.save();
                 instance.spawnAllPosters();
             }
 

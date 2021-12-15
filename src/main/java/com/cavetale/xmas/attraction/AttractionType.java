@@ -7,7 +7,8 @@ public enum AttractionType {
     FIND_BUNNY(FindBunnyAttraction.class),
     REPEAT_MELODY(RepeatMelodyAttraction.class),
     MUSIC_HERO(MusicHeroAttraction.class),
-    POSTER(PosterAttraction.class);
+    POSTER(PosterAttraction.class),
+    PET_PILE(PetPileAttraction.class);
 
     public final Class<? extends Attraction> type;
 

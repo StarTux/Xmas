@@ -74,8 +74,7 @@ public final class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
     protected void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        Entity entity = event.getEntity();
-        Location location = entity.getLocation();
+        Location location = event.getEntity().getLocation();
         for (Attraction attraction : plugin.attractionsMap.values()) {
             if (!attraction.isInArea(location)) continue;
             attraction.onEntityDamageByEntity(event);
@@ -84,8 +83,7 @@ public final class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
     protected void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Entity entity = event.getRightClicked();
-        Location location = entity.getLocation();
+        Location location = event.getRightClicked().getLocation();
         for (Attraction attraction : plugin.attractionsMap.values()) {
             if (!attraction.isInArea(location)) continue;
             attraction.onPlayerInteractEntity(event);
