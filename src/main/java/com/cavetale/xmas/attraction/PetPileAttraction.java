@@ -128,6 +128,7 @@ public final class PetPileAttraction extends Attraction<PetPileAttraction.SaveTa
                 case POTATOES:
                 case WHEAT:
                 case BEETROOTS:
+                case SNOW:
                     return false;
                 default: return true;
                 }

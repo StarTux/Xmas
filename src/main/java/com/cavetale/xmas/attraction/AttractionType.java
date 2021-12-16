@@ -8,7 +8,8 @@ public enum AttractionType {
     REPEAT_MELODY(RepeatMelodyAttraction.class),
     MUSIC_HERO(MusicHeroAttraction.class),
     POSTER(PosterAttraction.class),
-    PET_PILE(PetPileAttraction.class);
+    PET_PILE(PetPileAttraction.class),
+    SNOWBALL_FIGHT(SnowballFightAttraction.class);
 
     public final Class<? extends Attraction> type;
 

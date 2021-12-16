@@ -96,11 +96,16 @@ public enum Booth {
                     XmasPresent.CHOCOLATE,
                     a -> ((PosterAttraction) a).setPoster("XmasBlackoutPoster")),
     SHEEP_CAT_PILE(AttractionType.PET_PILE, 16,
-                 Component.text("Sorting out Cats"),
-                 Component.text("Quick, close the doors! I need to sort out my cats."
-                                + " Can you find the one I'm looking for?"),
-                 XmasPresent.PALETTE,
-                 a -> ((PetPileAttraction) a).setCats());
+                   Component.text("Sorting Cats"),
+                   Component.text("Quick, close the doors! I need to sort out my cats."
+                                  + " Can you find the one I'm looking for?"),
+                   XmasPresent.PALETTE,
+                   a -> ((PetPileAttraction) a).setCats()),
+    SNOWMAN_TOWER(AttractionType.SNOWBALL_FIGHT, 17,
+                  Component.text("Snowman Tower"),
+                  Component.text("Snowmen in this tower taunt everyone with their snowball"
+                                 + " skills. Can you hit them all without being hit?"),
+                  XmasPresent.GLOBE, null);
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
