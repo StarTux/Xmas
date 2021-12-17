@@ -105,7 +105,12 @@ public enum Booth {
                   Component.text("Snowman Tower"),
                   Component.text("Snowmen in this tower taunt everyone with their snowball"
                                  + " skills. Can you hit them all without being hit?"),
-                  XmasPresent.GLOBE, null);
+                  XmasPresent.GLOBE, null),
+    SILENT_NIGHT_HERO(AttractionType.MUSIC_HERO, 18,
+                      Component.text("Silent Night"),
+                      Component.text("This Christmas song is so relaxing..."),
+                      XmasPresent.TRAFFIC_LIGHT,
+                      a -> ((MusicHeroAttraction) a).setMusic(Music.SILENT_NIGHT));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
