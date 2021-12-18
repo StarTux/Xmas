@@ -110,7 +110,13 @@ public enum Booth {
                       Component.text("Silent Night"),
                       Component.text("This Christmas song is so relaxing..."),
                       XmasPresent.TRAFFIC_LIGHT,
-                      a -> ((MusicHeroAttraction) a).setMusic(Music.SILENT_NIGHT));
+                      a -> ((MusicHeroAttraction) a).setMusic(Music.SILENT_NIGHT)),
+    EASTER_POSTER(AttractionType.POSTER, 19,
+                  Component.text("Picture Puzzle"),
+                  Component.text("My Family Picture got all scrambled up."
+                                 + " Can you put it in order?"),
+                  XmasPresent.GOBLET,
+                  a -> ((PosterAttraction) a).setPoster("XmasEasterPoster"));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
