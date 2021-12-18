@@ -51,7 +51,7 @@ public final class PosterAttraction extends Attraction<PosterAttraction.SaveTag>
         } else if (posterFace.x < posterBlock.x) {
             face = BlockFace.WEST;
             right = BlockFace.SOUTH;
-        } else if (posterFace.z > posterBlock.x) {
+        } else if (posterFace.z > posterBlock.z) {
             face = BlockFace.SOUTH;
             right = BlockFace.EAST;
         } else if (posterFace.z < posterBlock.z) {
