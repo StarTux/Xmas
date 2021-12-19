@@ -116,7 +116,11 @@ public enum Booth {
                   Component.text("My Family Picture got all scrambled up."
                                  + " Can you put it in order?"),
                   XmasPresent.GOBLET,
-                  a -> ((PosterAttraction) a).setPoster("XmasEasterPoster"));
+                  a -> ((PosterAttraction) a).setPoster("XmasEasterPoster")),
+    UKZ_BUNNIES(AttractionType.FIND_BUNNY, 20,
+                Component.text("Bunnies, Back to Bed"),
+                Component.text("It's bedtime for my bunnies. Please catch them all!"),
+                XmasPresent.SHADES, null);
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
