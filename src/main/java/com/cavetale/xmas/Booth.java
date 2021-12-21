@@ -120,7 +120,13 @@ public enum Booth {
     UKZ_BUNNIES(AttractionType.FIND_BUNNY, 20,
                 Component.text("Bunnies, Back to Bed"),
                 Component.text("It's bedtime for my bunnies. Please catch them all!"),
-                XmasPresent.SHADES, null);
+                XmasPresent.SHADES, null),
+    CAT_PILE_HUT(AttractionType.PET_PILE, 21,
+                 Component.text("Kittens in the Hut"),
+                 Component.text("Close the door and help me sort out my cats!"
+                                + " I need to give them a bath..."),
+                 XmasPresent.CLAMSHELL,
+                 a -> ((PetPileAttraction) a).setCats());
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
