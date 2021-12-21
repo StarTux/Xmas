@@ -27,6 +27,7 @@ import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 public final class PetPileAttraction extends Attraction<PetPileAttraction.SaveTag> {
@@ -179,6 +180,15 @@ public final class PetPileAttraction extends Attraction<PetPileAttraction.SaveTa
     @Override
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         onPlayerUseEntity(event.getPlayer(), event.getRightClicked());
+    }
+
+    @Override
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!isPlaying()) return;
+        if (saveTag.pets == null) return;
+        if (saveTag.pets.containsKey(event.getEntity().getUniqueId())) {
+            event.setCancelled(true);
+        }
     }
 
     void onPlayerUseEntity(Player player, Entity entity) {
