@@ -333,7 +333,57 @@ public enum Music {
                  .beat(4, C, 1).beat(2, C, 1).beat(3, E, 1).beat(1, C, 1).beat(2, A, 1)
                  .beat(4, B, 1).beat(6, D, 1).pause(2)
                  .beat(3, B, 1).beat(1, F, 0).beat(2, D, 0).beat(3, F, 0).beat(1, E, 0).beat(2, C, 0)
-                 .beat(12, B, 0));
+                 .beat(12, B, 0)),
+
+    KINDERLEIN(PIANO, 150L, Map.of(C, SHARP, F, SHARP), b -> b
+               .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, G, 1)
+               .beat(4, F, 0) .pause(4)
+
+               .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, G, 1)
+               .beat(4, F, 0) .pause(4)
+
+               .beat(2, F, 0)
+               .beat(4, E, 0) .beat(2, E, 0) .beat(2, E, 0)
+               .beat(4, G, 1) .beat(2, G, 1) .beat(2, G, 1)
+               .beat(4, F, 0) .beat(2, F, 0) .beat(2, F, 0)
+               .beat(4, B, 1) .pause(4)
+
+               .beat(2, B, 1)
+               .beat(4, A, 1) .beat(2, A, 1) .beat(2, A, 1)
+               .beat(4, D, 1) .beat(2, A, 1) .beat(2, F, 0)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, C, 0)
+               .beat(6, D, 0)
+
+               .extra(FLUTE)
+               .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, G, 1)
+               .beat(4, F, 0) .pause(4)
+
+               .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, A, 1) .beat(2, F, 0) .beat(2, A, 1)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, G, 1)
+               .beat(4, F, 0) .pause(4)
+
+               .beat(2, F, 0)
+               .beat(4, E, 0) .beat(2, E, 0) .beat(2, E, 0)
+               .beat(4, G, 1) .beat(2, G, 1) .beat(2, G, 1)
+               .beat(4, F, 0) .beat(2, F, 0) .beat(2, F, 0)
+               .beat(4, B, 1) .pause(4)
+
+               .beat(2, B, 1)
+               .beat(4, A, 1) .beat(2, A, 1) .beat(2, A, 1)
+               .beat(4, D, 1) .beat(2, A, 1) .beat(2, F, 0)
+               .beat(4, G, 1) .beat(2, E, 0) .beat(2, C, 0)
+               .beat(6, D, 0));
 
     public final Instrument instrument;
     public final long speed;

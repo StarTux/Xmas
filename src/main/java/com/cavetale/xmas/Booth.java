@@ -126,7 +126,12 @@ public enum Booth {
                  Component.text("Close the door and help me sort out my cats!"
                                 + " I need to give them a bath..."),
                  XmasPresent.CLAMSHELL,
-                 a -> ((PetPileAttraction) a).setCats());
+                 a -> ((PetPileAttraction) a).setCats()),
+    KINDERLEIN_HERO(AttractionType.MUSIC_HERO, 22,
+                    Component.text("Childrens' Song"),
+                    Component.text("All aboard the Christmas train!"),
+                    XmasPresent.LOLLY,
+                    a -> ((MusicHeroAttraction) a).setMusic(Music.KINDERLEIN));
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;
