@@ -415,6 +415,13 @@ public final class XmasPlugin extends JavaPlugin {
                             player.getWorld().dropItem(player.getEyeLocation(), drop);
                         }
                     }
+                    if (session.tag.doorsOpened == 25) {
+                        String cmd = "titles unlockset " + player.getName() + " Santa";
+                        getLogger().info("Running command: " + cmd);
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                        session.tag.doorsOpened += 1;
+                        session.save();
+                    }
                 });
             builder.highlightSlot(slot, NamedTextColor.GOLD);
         }
