@@ -89,10 +89,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
     public static Attraction of(XmasPlugin plugin, @NonNull final String name, @NonNull final List<Cuboid> areaList, final Booth booth) {
         if (areaList.isEmpty()) throw new IllegalArgumentException(name + ": area list is empty");
         if (areaList.get(0).name == null) throw new IllegalArgumentException(name + ": first area has no name!");
-        String typeName = areaList.get(0).name;
-        AttractionType attractionType = booth != null && booth.type != null
-            ? booth.type
-            : AttractionType.forName(typeName);
+        AttractionType attractionType = booth.type;
         if (attractionType == null) return null;
         Attraction result = makeAttraction(plugin, attractionType, name, areaList, booth);
         if (booth != null) {
@@ -219,7 +216,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
 
     protected final void playerLeftArea(Player player) {
         plugin.sessionOf(player).setCooldown(this, Duration.ofMinutes(1));
-        player.showTitle(Title.title(xmasify("Game Over"), xmasify("You left the house")));
+        player.showTitle(Title.title(xmasify("Game Over"), xmasify("You left the game")));
         player.sendActionBar(Component.empty());
         Music.GRINCH.melody.play(plugin, player);
         stop();

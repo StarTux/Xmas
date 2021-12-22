@@ -131,7 +131,28 @@ public enum Booth {
                     Component.text("Childrens' Song"),
                     Component.text("All aboard the Christmas train!"),
                     XmasPresent.LOLLY,
-                    a -> ((MusicHeroAttraction) a).setMusic(Music.KINDERLEIN));
+                    a -> ((MusicHeroAttraction) a).setMusic(Music.KINDERLEIN)),
+    SNOWBALL_TAG(AttractionType.SNOWBALL_FIGHT, 23,
+                 Component.text("Snowball Tag"),
+                 Component.text("I'm playing snowball tag with my snowmen"
+                                + " in this town square,"
+                                + " but they always hit me first."
+                                + " Can you defeat them all?"),
+                 XmasPresent.TOY_SWORD, null),
+    NATIVITY_POSTER(AttractionType.POSTER, 24,
+                    Component.text("Nativity Scene"),
+                    Component.text("Someone scrambled up my picture of the"
+                                   + " town nativity scene."
+                                   + " At least they didn't steal the baby."
+                                   + " Can you sort it out?"),
+                    XmasPresent.CAT,
+                    a -> ((PosterAttraction) a).setPoster("XmasNativityPoster")),
+    SNOWBALL_ICE_FIGHT(AttractionType.SNOWBALL_FIGHT, 25,
+                       Component.text("Snowballs on Ice"),
+                       Component.text("The snowmen are out on the ice,"
+                                      + " and they are vicious!"
+                                      + " Snowball them before they do it to you!"),
+                       XmasPresent.STAR, null);
 
     public final String name; // Corresponds with area.name
     public final int dayOfChristmas;

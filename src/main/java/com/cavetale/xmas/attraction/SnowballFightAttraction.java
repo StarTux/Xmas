@@ -41,12 +41,16 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
     protected SnowballFightAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
         Set<Vec3i> snowmanBlockSet = new HashSet<>();
+        Set<Vec3i> noSnowmanBlockSet = new HashSet<>();
         for (Cuboid cuboid : areaList) {
             if ("snowman".equals(cuboid.name)) {
                 snowmanBlockSet.addAll(cuboid.enumerate());
+            } else if ("nosnowman".equals(cuboid.name)) {
+                noSnowmanBlockSet.addAll(cuboid.enumerate());
             }
         }
         snowmanBlocks.addAll(snowmanBlockSet);
+        snowmanBlocks.removeAll(noSnowmanBlockSet);
     }
 
     @Override
@@ -171,15 +175,22 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
             for (UUID uuid : saveTag.snowmen) {
                 Entity entity = Bukkit.getEntity(uuid);
                 if (!(entity instanceof Snowman snowman)) continue;
-                final int total = 4;
-                for (int i = 0; i < total; i += 1) {
-                    double frac = (double) i / (double) total;
-                    double pi = frac * 2.0 * Math.PI + random.nextDouble() * Math.PI;
-                    final double str = 1.5;
-                    Vector direction = new Vector(Math.cos(pi) * str,
-                                                  0.0,
-                                                  Math.sin(pi) * str);
+                if (player.getLocation().getY() >= snowman.getLocation().getY() + 1.5 && snowman.hasLineOfSight(player)) {
+                    Vector direction = player.getEyeLocation().toVector()
+                        .subtract(snowman.getEyeLocation().toVector())
+                        .multiply(1.5);
                     snowman.launchProjectile(Snowball.class, direction);
+                } else {
+                    final int total = 4;
+                    for (int i = 0; i < total; i += 1) {
+                        double frac = (double) i / (double) total;
+                        double pi = frac * 2.0 * Math.PI + random.nextDouble() * Math.PI;
+                        final double str = 1.5;
+                        Vector direction = new Vector(Math.cos(pi) * str,
+                                                      0.0,
+                                                      Math.sin(pi) * str);
+                        snowman.launchProjectile(Snowball.class, direction);
+                    }
                 }
             }
             player.playSound(player.getLocation(), Sound.ENTITY_SNOW_GOLEM_SHOOT,
