@@ -1,7 +1,7 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.xmas.Booth;
 import com.cavetale.xmas.XmasPlugin;
 import java.time.Duration;
@@ -38,15 +38,15 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
     protected final List<Vec3i> snowmanBlocks = new ArrayList<>();
     @Setter private int totalRounds = 5;
 
-    protected SnowballFightAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected SnowballFightAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
         Set<Vec3i> snowmanBlockSet = new HashSet<>();
         Set<Vec3i> noSnowmanBlockSet = new HashSet<>();
-        for (Cuboid cuboid : areaList) {
-            if ("snowman".equals(cuboid.name)) {
-                snowmanBlockSet.addAll(cuboid.enumerate());
-            } else if ("nosnowman".equals(cuboid.name)) {
-                noSnowmanBlockSet.addAll(cuboid.enumerate());
+        for (Area area : areaList) {
+            if ("snowman".equals(area.name)) {
+                snowmanBlockSet.addAll(area.enumerate());
+            } else if ("nosnowman".equals(area.name)) {
+                noSnowmanBlockSet.addAll(area.enumerate());
             }
         }
         snowmanBlocks.addAll(snowmanBlockSet);
@@ -73,7 +73,7 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
                 Block block = v.toBlock(w);
                 if (block.isEmpty()) return false;
                 Material mat = block.getType();
-                if (Tag.CARPETS.isTagged(mat)) return false;
+                if (Tag.WOOL_CARPETS.isTagged(mat)) return false;
                 if (Tag.CROPS.isTagged(mat)) return false;
                 switch (mat) {
                 case COBWEB:
@@ -141,9 +141,9 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
             startingGun(player);
             player.showTitle(Title.title(Component.empty(),
                                          xmasify("Round " + saveTag.round + "/" + totalRounds),
-                                         Title.Times.of(Duration.ZERO,
-                                                        Duration.ofSeconds(1),
-                                                        Duration.ZERO)));
+                                         Title.Times.times(Duration.ZERO,
+                                                           Duration.ofSeconds(1),
+                                                           Duration.ZERO)));
             return State.PLAY;
         }
         int secondsLeft = (int) ((timeLeft - 1) / 1000L) + 1;
@@ -197,9 +197,9 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
                              SoundCategory.MASTER, 1.0f, 1.5f);
             player.showTitle(Title.title(Component.empty(),
                                          xmasify("pew"),
-                                         Title.Times.of(Duration.ZERO,
-                                                        Duration.ofMillis(500L),
-                                                        Duration.ZERO)));
+                                         Title.Times.times(Duration.ZERO,
+                                                           Duration.ofMillis(500L),
+                                                           Duration.ZERO)));
         }
         return null;
     }
@@ -230,9 +230,9 @@ public final class SnowballFightAttraction extends Attraction<SnowballFightAttra
                     changeState(State.WARMUP);
                     shooter.showTitle(Title.title(Component.empty(),
                                                   xmasify("Round complete!"),
-                                                  Title.Times.of(Duration.ZERO,
-                                                                 Duration.ofSeconds(1),
-                                                                 Duration.ZERO)));
+                                                  Title.Times.times(Duration.ZERO,
+                                                                    Duration.ofSeconds(1),
+                                                                    Duration.ZERO)));
                 }
             }
         }

@@ -1,11 +1,11 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
 import com.cavetale.core.event.player.PluginPlayerEvent;
 import com.cavetale.core.font.DefaultFont;
 import com.cavetale.core.font.Unicode;
 import com.cavetale.core.font.VanillaItems;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.core.util.Json;
 import com.cavetale.mytems.Mytems;
 import com.cavetale.mytems.MytemsCategory;
@@ -61,10 +61,10 @@ import org.bukkit.inventory.meta.BookMeta;
 public abstract class Attraction<T extends Attraction.SaveTag> {
     protected final XmasPlugin plugin;
     protected final String name;
-    protected final List<Cuboid> allAreas;
+    protected final List<Area> allAreas;
     protected final Booth booth;
     protected final File saveFile;
-    protected final Cuboid mainArea;
+    protected final Area mainArea;
     protected final Class<T> saveTagClass;
     protected PluginSpawn mainVillager;
     protected final Random random = ThreadLocalRandom.current();
@@ -87,7 +87,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
                     new ItemStack(Material.COD),
                     new ItemStack(Material.POISONOUS_POTATO)));
 
-    public static Attraction of(XmasPlugin plugin, @NonNull final String name, @NonNull final List<Cuboid> areaList, final Booth booth) {
+    public static Attraction of(XmasPlugin plugin, @NonNull final String name, @NonNull final List<Area> areaList, final Booth booth) {
         if (areaList.isEmpty()) throw new IllegalArgumentException(name + ": area list is empty");
         if (areaList.get(0).name == null) throw new IllegalArgumentException(name + ": first area has no name!");
         AttractionType attractionType = booth.type;
@@ -101,7 +101,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         return result;
     }
 
-    private static Attraction makeAttraction(XmasPlugin plugin, AttractionType type, String name, List<Cuboid> areaList, Booth booth) {
+    private static Attraction makeAttraction(XmasPlugin plugin, AttractionType type, String name, List<Area> areaList, Booth booth) {
         switch (type) {
         case MUSIC_HERO: return new MusicHeroAttraction(plugin, name, areaList, booth);
         case FIND_BUNNY: return new FindBunnyAttraction(plugin, name, areaList, booth);
@@ -114,7 +114,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         }
     }
 
-    protected Attraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth,
+    protected Attraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth,
                          final Class<T> saveTagClass, final Supplier<T> saveTagSupplier) {
         this.plugin = plugin;
         this.name = name;
@@ -124,7 +124,7 @@ public abstract class Attraction<T extends Attraction.SaveTag> {
         this.mainArea = areaList.get(0);
         this.saveTagClass = saveTagClass;
         this.saveTagSupplier = saveTagSupplier;
-        for (Cuboid area : areaList) {
+        for (Area area : areaList) {
             if ("npc".equals(area.name)) {
                 npcVector = area.min;
             }

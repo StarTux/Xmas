@@ -1,7 +1,7 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.poster.PosterPlugin;
 import com.cavetale.poster.save.Poster;
 import com.cavetale.xmas.Booth;
@@ -32,13 +32,13 @@ public final class PosterAttraction extends Attraction<PosterAttraction.SaveTag>
     private Duration playTime = Duration.ofMinutes(5);
     private long shownTime = -1;
 
-    protected PosterAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected PosterAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
-        for (Cuboid cuboid : areaList) {
-            if ("block".equals(cuboid.name)) {
-                posterBlock = cuboid.min;
-            } else if ("face".equals(cuboid.name)) {
-                posterFace = cuboid.min;
+        for (Area area : areaList) {
+            if ("block".equals(area.name)) {
+                posterBlock = area.min;
+            } else if ("face".equals(area.name)) {
+                posterFace = area.min;
             }
         }
         if (posterBlock == null || posterFace == null) {

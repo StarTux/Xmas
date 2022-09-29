@@ -1,7 +1,7 @@
 package com.cavetale.xmas;
 
-import com.cavetale.area.struct.Vec3i;
 import com.cavetale.core.event.player.PluginPlayerEvent;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.magicmap.event.MagicMapCursorEvent;
 import com.cavetale.magicmap.util.Cursors;
 import com.cavetale.mytems.event.music.PlayerBeatEvent;

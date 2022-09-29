@@ -1,8 +1,8 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
 import com.cavetale.core.font.Unicode;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.xmas.Booth;
 import com.cavetale.xmas.XmasPlugin;
 import java.time.Duration;
@@ -44,12 +44,12 @@ public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.Sa
             Rabbit.Type.SALT_AND_PEPPER,
             Rabbit.Type.WHITE);
 
-    protected FindBunnyAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected FindBunnyAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
         Set<Vec3i> bunnySet = new HashSet<>();
-        for (Cuboid cuboid : areaList) {
-            if ("bunny".equals(cuboid.name)) {
-                bunnySet.addAll(cuboid.enumerate());
+        for (Area area : areaList) {
+            if ("bunny".equals(area.name)) {
+                bunnySet.addAll(area.enumerate());
             }
         }
         this.possibleBunnyBlocks = Set.copyOf(bunnySet);
@@ -159,7 +159,7 @@ public final class FindBunnyAttraction extends Attraction<FindBunnyAttraction.Sa
                 Block block = it.toBlock(w);
                 if (block.isEmpty()) return false;
                 Material mat = block.getType();
-                if (Tag.CARPETS.isTagged(mat)) return false;
+                if (Tag.WOOL_CARPETS.isTagged(mat)) return false;
                 if (block.getType() == Material.COBWEB) return false;
                 return true;
             });

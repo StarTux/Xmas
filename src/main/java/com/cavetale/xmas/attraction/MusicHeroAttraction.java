@@ -1,8 +1,8 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
 import com.cavetale.core.font.Unicode;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.mytems.Mytems;
 import com.cavetale.mytems.event.music.PlayerBeatEvent;
 import com.cavetale.mytems.event.music.PlayerCloseMusicalInstrumentEvent;
@@ -41,9 +41,9 @@ public final class MusicHeroAttraction extends Attraction<MusicHeroAttraction.Sa
     protected Vec3i lecternBlock = null;
     protected ItemStack melodyBook;
 
-    protected MusicHeroAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected MusicHeroAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
-        for (Cuboid area : areaList) {
+        for (Area area : areaList) {
             if ("lectern".equals(area.name)) {
                 lecternBlock = area.min;
             }

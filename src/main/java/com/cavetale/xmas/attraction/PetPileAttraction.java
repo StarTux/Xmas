@@ -1,7 +1,7 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
+import com.cavetale.area.struct.Area;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.mytems.util.Text;
 import com.cavetale.xmas.Booth;
 import com.cavetale.xmas.XmasPlugin;
@@ -39,13 +39,13 @@ public final class PetPileAttraction extends Attraction<PetPileAttraction.SaveTa
     protected Duration playTime = Duration.ofSeconds(60);
     protected int lastShownTime = -1;
 
-    protected PetPileAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected PetPileAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
-        for (Cuboid cuboid : areaList) {
-            if ("pet".equals(cuboid.name)) {
-                petBlocks.addAll(cuboid.enumerate());
-            } else if ("show".equals(cuboid.name)) {
-                showBlock = cuboid.min;
+        for (Area area : areaList) {
+            if ("pet".equals(area.name)) {
+                petBlocks.addAll(area.enumerate());
+            } else if ("show".equals(area.name)) {
+                showBlock = area.min;
             }
         }
     }
@@ -118,7 +118,7 @@ public final class PetPileAttraction extends Attraction<PetPileAttraction.SaveTa
                 Block block = v.toBlock(w);
                 if (block.isEmpty()) return false;
                 Material mat = block.getType();
-                if (Tag.CARPETS.isTagged(mat)) return false;
+                if (Tag.WOOL_CARPETS.isTagged(mat)) return false;
                 if (Tag.CROPS.isTagged(mat)) return false;
                 switch (mat) {
                 case COBWEB:

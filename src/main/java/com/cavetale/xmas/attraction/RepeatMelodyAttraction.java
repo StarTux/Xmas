@@ -1,15 +1,15 @@
 package com.cavetale.xmas.attraction;
 
-import com.cavetale.area.struct.Cuboid;
+import com.cavetale.area.struct.Area;
 import com.cavetale.core.event.player.PluginPlayerEvent.Detail;
 import com.cavetale.core.event.player.PluginPlayerEvent;
 import com.cavetale.core.util.Json;
-import com.cavetale.xmas.Booth;
-import com.cavetale.xmas.XmasPlugin;
 import com.cavetale.mytems.item.music.Beat;
 import com.cavetale.mytems.item.music.Melody;
 import com.cavetale.mytems.item.music.MelodyBuilder;
 import com.cavetale.mytems.item.music.Semitone;
+import com.cavetale.xmas.Booth;
+import com.cavetale.xmas.XmasPlugin;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public final class RepeatMelodyAttraction extends Attraction<RepeatMelodyAttract
     @Setter protected Instrument instrument = Instrument.PIANO;
     @Setter protected int octave = 0;
 
-    protected RepeatMelodyAttraction(final XmasPlugin plugin, final String name, final List<Cuboid> areaList, final Booth booth) {
+    protected RepeatMelodyAttraction(final XmasPlugin plugin, final String name, final List<Area> areaList, final Booth booth) {
         super(plugin, name, areaList, booth, SaveTag.class, SaveTag::new);
         this.doesRequireInstrument = true;
         this.displayName = Component.text("Play the Melody", NamedTextColor.DARK_RED);
@@ -96,7 +96,7 @@ public final class RepeatMelodyAttraction extends Attraction<RepeatMelodyAttract
         }
         Component line = Component.join(JoinConfiguration.separator(Component.space()), comps).color(NamedTextColor.AQUA);
         player.showTitle(Title.title(Component.empty(), line,
-                                     Title.Times.of(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1))));
+                                     Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1))));
         saveTag.noteIndex += 1;
     }
 

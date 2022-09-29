@@ -1,10 +1,11 @@
 package com.cavetale.xmas;
 
+import com.cavetale.area.struct.Area;
 import com.cavetale.area.struct.AreasFile;
-import com.cavetale.area.struct.Cuboid;
-import com.cavetale.area.struct.Vec3i;
 import com.cavetale.core.font.DefaultFont;
 import com.cavetale.core.font.GuiOverlay;
+import com.cavetale.core.struct.Cuboid;
+import com.cavetale.core.struct.Vec3i;
 import com.cavetale.mytems.Mytems;
 import com.cavetale.mytems.util.Items;
 import com.cavetale.mytems.util.Text;
@@ -192,9 +193,9 @@ public final class XmasPlugin extends JavaPlugin {
         AreasFile areasFile = AreasFile.load(world, ATTRACTION_AREAS);
         if (areasFile == null) throw new IllegalStateException("Areas file not found: " + ATTRACTION_AREAS);
         Set<Booth> unusedBooths = EnumSet.allOf(Booth.class);
-        for (Map.Entry<String, List<Cuboid>> entry : areasFile.areas.entrySet()) {
+        for (Map.Entry<String, List<Area>> entry : areasFile.areas.entrySet()) {
             String name = entry.getKey();
-            List<Cuboid> areaList = entry.getValue();
+            List<Area> areaList = entry.getValue();
             if (areaList.isEmpty()) continue;
             if (name.equals("ClickCalendar")) {
                 calendarBlock = areaList.get(0).min;
@@ -256,17 +257,17 @@ public final class XmasPlugin extends JavaPlugin {
         if (areasFile == null) {
             throw new IllegalStateException("Areas file not found: " + TRADER_AREAS);
         }
-        List<Cuboid> regions = areasFile.areas.get("Traders");
-        if (regions == null) {
+        List<Area> traderAreas = areasFile.areas.get("Traders");
+        if (traderAreas == null) {
             throw new IllegalStateException("Traders list not found!");
         }
         for (XmasPresent xmasPresent : XmasPresent.values()) {
-            if (xmasPresent.ordinal() >= regions.size()) {
+            if (xmasPresent.ordinal() >= traderAreas.size()) {
                 getLogger().warning("Trader list too short for " + xmasPresent);
                 break;
             }
-            Cuboid cuboid = regions.get(xmasPresent.ordinal());
-            PluginSpawn traderSpawn = PluginSpawn.register(this, ZoneType.CHRISTMAS, Loc.of(cuboid.min.toLocation(world)));
+            Area area = traderAreas.get(xmasPresent.ordinal());
+            PluginSpawn traderSpawn = PluginSpawn.register(this, ZoneType.CHRISTMAS, Loc.of(area.min.toLocation(world)));
             traderSpawns.add(traderSpawn);
             traderSpawn.setOnPlayerClick(player -> onClickTrader(player, xmasPresent));
             traderSpawn.setOnMobSpawning(mob -> {
@@ -275,7 +276,17 @@ public final class XmasPlugin extends JavaPlugin {
         }
     }
 
-    public List<Player> getPlayersIn(Cuboid area) {
+    public List<Player> getPlayersIn(Cuboid cuboid) {
+        List<Player> result = new ArrayList<>();
+        for (Player player : getWorld().getPlayers()) {
+            if (cuboid.contains(player.getLocation())) {
+                result.add(player);
+            }
+        }
+        return result;
+    }
+
+    public List<Player> getPlayersIn(Area area) {
         List<Player> result = new ArrayList<>();
         for (Player player : getWorld().getPlayers()) {
             if (area.contains(player.getLocation())) {
